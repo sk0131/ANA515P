@@ -1,0 +1,151 @@
+```{r}
+# Necessay libraries        
+library(dplyr)
+library(ggplot2)
+library(writexl)
+library(knitr)
+```
+
+
+```{r}
+# import and read data
+data <- read.csv("C:/Users/KPK/Desktop/Vikas Sir/ANA-515P/Survey.csv")
+View(data)
+```
+
+
+```{r}
+# top 6 rows in te data
+head(data)
+```
+
+
+```{r}
+# structure of data with data types
+str(data)
+```
+
+
+```{r}
+# summary of data
+summary(data)
+```
+
+
+```{r}
+# dimension of data
+dim(data)
+```
+
+
+```{r}
+# column names of data
+colnames(data)
+```
+
+
+```{r}
+# missing values in te data
+colSums(is.na(data))
+```
+
+
+```{r}
+# uniques value of data
+unique(data$Gender, "\n")
+unique(data$Country, "\n")
+unique(data$state, "\n")
+unique(data$work_interfere, "\n")
+unique(data$coworkers, "\n")
+unique(data$supervisor, "\n")
+unique(data$phys_health_consequence, "\n")
+unique(data$mental_health_consequence, "\n")
+```
+
+
+```{r}
+# total duplicated values 
+sum(duplicated(data))
+```
+
+
+```{r}
+# remove duplicated values
+data <- data[!duplicated(data), ]
+```
+
+
+```{r}
+# we are filling "missing values" in our data
+data$state <- ifelse(is.na(data$state), "United States", data$state)
+data$work_interfere <- ifelse(is.na(data$work_interfere), "Sometimes", data$work_interfere)
+data$self_employed <- ifelse(is.na(data$self_employed), "Yes", data$self_employed)
+data$tech_company <- ifelse(is.na(data$tech_company), "Yes", data$tech_company)
+data$family_history <- ifelse(is.na(data$family_history), "Yes", data$family_history)
+data$treatment <- ifelse(is.na(data$treatment), "Yes", data$treatment)
+data$Age[is.na(data$Age)] <- mean(data$Age, na.rm = TRUE)
+```
+
+
+```{r}
+# we're droping these of columns in the data 
+data <- subset(data, select = -comments)
+data <- subset(data, select = -Timestamp)
+```
+
+
+```{r}
+# again chekcing missing values in the data
+colSums(is.na(data))
+```
+
+
+```{r}
+# we're saving the clean data
+full_path = "C:/Users/KPK/Desktop/ANA-515P/clean_data.xlsx"
+write_xlsx(data, path = full_path)
+```
+
+
+```{r}
+# histogram for checking high value
+ggplot(data, aes(x = Age)) + 
+  geom_histogram( fill = 'lightblue', col = 'black', bins = 15) +
+  theme_bw()
+```
+
+
+```{r}
+suppressWarnings({
+# bar plot for checking age according to state
+ggplot(data = data, aes(x = state, fill = Age)) +
+  geom_bar(position = "dodge", color = "black" , fill = 'red') + 
+  theme_classic()
+})
+```
+
+
+```{r}
+# Box plot for checking outliers
+ggplot(data = data,aes(y=Age,x=work_interfere))+
+  geom_boxplot(fill = 'gold', col = 'black')+
+  labs(title = "Box Plot of Age by work_interfere", x = "work_interfere", y = "Age") +
+  theme_bw()
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
